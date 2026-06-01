@@ -7,12 +7,14 @@ import os
 import sys
 from functools import cache
 from typing import Optional
+from urllib.parse import urlparse
 
 from mach.util import get_state_dir
 from mozbuild.base import MozbuildObject
 from mozversioncontrol import MissingVCSExtension, get_repository_object
 
 from .lando import push_to_lando_try
+from .tc_auth import get_taskcluster_credentials
 
 GIT_CINNABAR_NOT_FOUND = """
 Could not detect `git-cinnabar`.
@@ -185,6 +187,31 @@ def _is_hg_try(remote):
     return HG_TRY_URL in remote
 
 
+def _fire_git_push_hook(remote, head_sha, dest_branch, vcs):
+    from gecko_taskgraph.util.taskcluster import trigger_hook
+
+    parsed = urlparse(remote)
+    # Strip leading slash and trailing .git to get e.g. "mozilla/enterprise-firefox-try"
+    repo_path = parsed.path.lstrip("/").removesuffix(".git")
+
+    hook_group_id = "git-push"
+    # Try repos have a wildcard branch ("*") whose hookId ends with a trailing slash
+    hook_id = f"{repo_path}/"
+
+    scope = f"hooks:trigger-hook:{hook_group_id}/{repo_path}/*"
+    credentials = get_taskcluster_credentials(scope)
+    os.environ["TASKCLUSTER_CLIENT_ID"] = credentials["clientId"]
+    os.environ["TASKCLUSTER_ACCESS_TOKEN"] = credentials["accessToken"]
+
+    payload = {
+        "sha": head_sha,
+        "base_sha": head_sha,
+        "ref": f"refs/heads/{dest_branch}",
+        "owner": vcs.get_user_email() or "nobody@mozilla.com",
+    }
+    trigger_hook(hook_group_id, hook_id, payload)
+
+
 def push_to_try(
     method,
     msg,
@@ -217,9 +244,10 @@ def push_to_try(
     commit_message = f"{msg}{closed_tree_string}\n\n{full_commandline_entry}\n\nPushed via `mach try {method}`"
 
     changed_files = {}
+    note_content = ""
 
     if try_task_config:
-        changed_files["try_task_config.json"] = (
+        note_content = (
             json.dumps(
                 try_task_config, indent=4, separators=(",", ": "), sort_keys=True
             )
@@ -234,10 +262,9 @@ def push_to_try(
     if not push:
         print("Commit message:")
         print(commit_message)
-        config = changed_files.pop("try_task_config.json", None)
-        if config:
+        if note_content:
             print("Calculated try_task_config.json:")
-            print(config)
+            print(note_content)
         if stage_changes:
             vcs.stage_changes(changed_files)
 
@@ -246,12 +273,18 @@ def push_to_try(
     metrics.mach_try.commit_prep.stop()
     try:
         if push_to_vcs:
+            if not _is_hg_try(remote):
+                head_sha = vcs.head_rev
+                dest_branch = vcs.get_try_dest_branch()
             vcs.push_to_try(
                 commit_message,
                 changed_files=changed_files,
+                note_content=note_content,
                 allow_log_capture=allow_log_capture,
                 remote=remote,
             )
+            if not _is_hg_try(remote):
+                _fire_git_push_hook(remote, head_sha, dest_branch, vcs)
         else:
             push_data = push_to_lando_try(
                 vcs,
