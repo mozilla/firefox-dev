@@ -20,6 +20,14 @@
 #     ownTaskId: // taskId of the task that will be created
 #   }
 #
+# - git-push (mach try via build-decision) - https://github.com/mozilla-releng/fxci-config/blob/main/build-decision/src/build_decision/git_push.py
+#   {
+#     tasks_for: 'git-push',
+#     event: {after, before, ref, base_ref, pusher: {email}, repository: {name, full_name, html_url}},
+#     as_slugid: // function
+#     ownTaskId: // taskId of the task that will be created
+#   }
+#
 # - action tasks - See:
 #   * taskcluster/gecko_taskgraph/actions/registry.py,
 #   * https://docs.taskcluster.net/docs/manual/design/conventions/actions/spec
@@ -350,8 +358,8 @@ tasks:
                                         - $if: 'repository.project == "mozilla-central"'
                                           then:
                                               matrixBody: "${repository.project} push notification: https://treeherder.mozilla.org/#/jobs?repo=${repository.project}&revision=${push.revision}"
-          # Decision task for events originating from Github
-          'tasks_for[:6] == "github" || (tasks_for in ["action", "pr-action"] && parameters["repository_type"] == "git") || (tasks_for == "cron" && repository["type"] == "git")':
+          # Decision task for events originating from Github or fired directly via build-decision
+          'tasks_for[:6] == "github" || tasks_for == "git-push" || (tasks_for in ["action", "pr-action"] && parameters["repository_type"] == "git") || (tasks_for == "cron" && repository["type"] == "git")':
               $let:
                   $merge:
                       - trustDomain: gecko
@@ -364,6 +372,9 @@ tasks:
                                 ownTaskId: {$eval: as_slugid("decision_task")}
                                 eventType: '${tasks_for[7:]}'  # strip out 'github-'
                                 eventAction: '${event["action"]}'  # empty string if 'action' doesn't exist
+                            'tasks_for == "git-push"':
+                                ownTaskId: {$eval: as_slugid("decision_task")}
+                                eventType: 'push'
                             'tasks_for in ["action", "cron", "pr-action"]':
                                 ownTaskId: '${ownTaskId}'
                                 ownerEmail: '${tasks_for}@noreply.mozilla.org'
@@ -378,7 +389,7 @@ tasks:
                                 baseRev: '${push.revision}'
                                 headRev: '${push.revision}'
                       - $switch:
-                            'tasks_for == "github-push"':
+                            'tasks_for == "github-push" || tasks_for == "git-push"':
                                 ownerEmail: '${event.pusher.email}'
                                 baseRepoUrl: '${event.repository.html_url}'
                                 repoUrl: '${event.repository.html_url}'
@@ -418,8 +429,8 @@ tasks:
                   in:
                       $if: >
                         eventType in ["action", "cron"]
-                        || (eventType == "push" && repoType == "prod" && shortRef == "main")
-                        || (eventType == "push" && repoType == "dev")
+                        || (tasks_for == "github-push" && repoType == "prod" && shortRef == "main")
+                        || (tasks_for == "git-push" && repoType == "dev")
                         || (isPullRequest && eventAction in ["opened", "reopened", "synchronize"])
                       then:
                           $let:
