@@ -310,7 +310,8 @@ class Repository(abc.ABC):
     def _resolve_try_branch(self) -> str:
         pass
 
-    def _push_to_git_try(self, message, changed_files, remote):
+    def get_try_dest_branch(self) -> str:
+        """Return the user-prefixed try branch name for the current branch."""
         dest_branch = self._resolve_try_branch()
         email = self.get_user_email()
         if not email:
@@ -326,13 +327,14 @@ class Repository(abc.ABC):
         if not dest_branch.startswith(global_prefix):
             dest_branch = f"{global_prefix}{dest_branch}"
 
-        with self.try_commit(message, changed_files) as head:
-            self.push(
-                remote,
-                ref=head,
-                dest_branch=dest_branch,
-                force=True,
-            )
+        return dest_branch
+
+    def _push_to_git_try(self, note_content, remote):
+        dest_branch = self.get_try_dest_branch()
+        head = self.head_rev
+        self.push(remote, ref=head, dest_branch=dest_branch, force=True)
+        self.add_note("decision-parameters", note_content, commit=head)
+        self.push(remote, ref="refs/notes/decision-parameters")
 
     @abc.abstractmethod
     def _push_to_hg_try(self, message, changed_files, allow_log_capture):
@@ -342,18 +344,21 @@ class Repository(abc.ABC):
         self,
         message: str,
         changed_files: dict[str, str] = {},
+        note_content: str = "",
         remote: str = HG_TRY_URL,
         allow_log_capture: bool = False,
     ):
-        """Create a temporary commit, push it to try and clean it up
-        afterwards.
+        """Push to try.
+
+        For hg remotes, creates a temporary commit carrying `changed_files`
+        (including try_task_config.json) and pushes it.
+
+        For git remotes, pushes the current HEAD and attaches `note_content`
+        as a git note on refs/notes/decision-parameters.
 
         With mercurial, MissingVCSExtension will be raised if the `push-to-try`
         extension is not installed. On git, MissingVCSExtension will be raised
         if git cinnabar is not present.
-
-        `changed_files` is a dict of file paths and their contents, see
-        `stage_changes`.
 
         If `allow_log_capture` is set to `True`, then the push-to-try will be run using
         Popen instead of check_call so that the logs can be captured elsewhere.
@@ -361,7 +366,7 @@ class Repository(abc.ABC):
         if HG_TRY_URL in remote:
             self._push_to_hg_try(message, changed_files, allow_log_capture)
         else:
-            self._push_to_git_try(message, changed_files, remote)
+            self._push_to_git_try(note_content, remote)
 
     @abc.abstractmethod
     def update(self, ref):

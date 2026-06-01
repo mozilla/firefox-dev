@@ -261,15 +261,24 @@ def test_push_to_git_try(repo, mocker):
 
     vcs = get_repository_object(repo.dir)
     remote = "upstream"
+    note_content = '{"version": 2, "parameters": {}}'
 
-    mock_try_commit = mocker.patch.object(vcs, "try_commit")
-    mock_try_commit.return_value.__enter__.return_value = "fakehead"
+    mocker.patch.object(
+        type(vcs), "head_rev", new_callable=mocker.PropertyMock, return_value="fakehead"
+    )
+    mocker.patch.object(vcs, "get_try_dest_branch", return_value="user/test/master")
     mock_push = mocker.patch.object(vcs, "push")
+    mock_add_note = mocker.patch.object(vcs, "add_note")
 
-    vcs.push_to_try("msg", remote=remote)
+    vcs.push_to_try("msg", note_content=note_content, remote=remote)
 
-    mock_push.assert_called_once_with(
+    assert mock_push.call_count == 2
+    mock_push.assert_any_call(
         remote, ref="fakehead", dest_branch="user/test/master", force=True
+    )
+    mock_push.assert_any_call(remote, ref="refs/notes/decision-parameters")
+    mock_add_note.assert_called_once_with(
+        "decision-parameters", note_content, commit="fakehead"
     )
 
 
@@ -294,19 +303,22 @@ def test_push_to_git_try_creates_bookmark(repo, mocker):
         return ""
 
     mocker.patch.object(vcs, "_run_read_only", side_effect=fake_run_read_only)
-    mock_run = mocker.patch.object(vcs, "_run")
-    mock_try_commit = mocker.patch.object(vcs, "try_commit")
-    mock_try_commit.return_value.__enter__.return_value = "fakehead"
+    mock_run = mocker.patch.object(vcs, "_run", return_value="")
+    mocker.patch.object(
+        type(vcs), "head_rev", new_callable=mocker.PropertyMock, return_value="fakehead"
+    )
     mock_push = mocker.patch.object(vcs, "push")
+    mocker.patch.object(vcs, "add_note")
 
     vcs.push_to_try("msg", remote=remote)
 
     mock_run.assert_called_once_with(
         "bookmark", "create", "push-abc123", "--revision", vcs.HEAD_REVSET
     )
-    mock_push.assert_called_once_with(
+    mock_push.assert_any_call(
         remote, ref="fakehead", dest_branch="user/test/push-abc123", force=True
     )
+    mock_push.assert_any_call(remote, ref="refs/notes/decision-parameters")
 
 
 def test_push_to_git_try_bookmark_persists(repo, mocker):
@@ -323,8 +335,10 @@ def test_push_to_git_try_bookmark_persists(repo, mocker):
     assert vcs.branch is None
 
     mocker.patch.object(vcs, "push")
+    mocker.patch.object(vcs, "add_note")
+    mocker.patch.object(vcs, "_run")
 
-    vcs._push_to_git_try("msg", {}, "upstream")
+    vcs._push_to_git_try("", "upstream")
 
     output = vcs._run_read_only(
         "log",
