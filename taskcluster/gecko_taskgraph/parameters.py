@@ -72,7 +72,6 @@ class GeckoParametersSchema(Schema, kw_only=True, rename=None):
     enable_always_target: Union[bool, list[str]]
     files_changed: list[str]
     hg_branch: Optional[str]
-    message: str
     next_version: Optional[str]
     optimize_strategies: Optional[str]
     phabricator_diff: Optional[str]
@@ -122,7 +121,6 @@ def get_defaults(repo_root=None):
         "files_changed": lambda: sorted(get_locally_changed_files(repo_root)),
         "head_repository": "https://hg.mozilla.org/mozilla-central",
         "hg_branch": "default",
-        "message": "",
         "next_version": None,
         "optimize_strategies": None,
         "phabricator_diff": None,

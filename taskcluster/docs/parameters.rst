@@ -70,9 +70,6 @@ Push Information
    Email address indicating the person who made the push.  Note that this
    value may be forged and *must not* be relied on for authentication.
 
-``message``
-   The try syntax in the commit message, if any.
-
 ``pushlog_id``
    The ID from the ``hg.mozilla.org`` pushlog
 

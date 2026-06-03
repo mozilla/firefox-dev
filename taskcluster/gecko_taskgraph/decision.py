@@ -157,17 +157,6 @@ def full_task_graph_to_manifests_by_task(full_task_json):
     return manifests_by_task
 
 
-def try_syntax_from_message(message):
-    """
-    Parse the try syntax out of a commit message, returning '' if none is
-    found.
-    """
-    try_idx = message.find("try:")
-    if try_idx == -1:
-        return ""
-    return message[try_idx:].split("\n", 1)[0]
-
-
 def taskgraph_decision(options, parameters):
     """
     Run the decision task.  This function implements `mach taskgraph decision`,
@@ -341,7 +330,6 @@ def get_decision_parameters(graph_config, options):
     parameters["build_number"] = 1
     parameters["version"] = get_version(product_dir)
     parameters["app_version"] = get_app_version(product_dir)
-    parameters["message"] = try_syntax_from_message(commit_message)
     parameters["next_version"] = None
     parameters["optimize_strategies"] = None
     parameters["optimize_target_tasks"] = True
