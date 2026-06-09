@@ -46,6 +46,14 @@ def bootstrap_tasks(config, tasks):
         bootstrap_url = config.params.file_url(
             "python/mozboot/bin/bootstrap.py", pretty=False
         )
+        # On git pushes, clone with vanilla git. On hg, use git-cinnabar to pull
+        # the head revision from Mercurial.
+        if config.params["repository_type"] == "git":
+            vcs = "git"
+            checkout_dir = "firefox"
+        else:
+            vcs = "git-cinnabar"
+            checkout_dir = "mozilla-unified"
         # Get all the non macos/windows local toolchains (the only ones bootstrap can use),
         # and use them as dependencies for the tasks we create, so that they don't start
         # before any potential toolchain task that would be triggered on the same push
@@ -64,10 +72,8 @@ def bootstrap_tasks(config, tasks):
                 # machines.
                 "unset MOZ_AUTOMATION",
                 f"curl --retry 5 -L -f -O {bootstrap_url}",
-                # We keep using git-cinnabar here because we rely on being able to pull
-                # the head revision from Mercurial.
-                f"python3 bootstrap.py --vcs=git-cinnabar --no-interactive --application-choice {app}",
-                "cd mozilla-unified",
+                f"python3 bootstrap.py --vcs={vcs} --no-interactive --application-choice {app}",
+                f"cd {checkout_dir}",
                 # After bootstrap, configure should go through without its own auto-bootstrap.
                 "./mach configure --enable-bootstrap=no-update",
                 # Then a build should go through too.
