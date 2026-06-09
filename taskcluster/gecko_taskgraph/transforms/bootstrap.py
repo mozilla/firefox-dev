@@ -43,7 +43,9 @@ def bootstrap_tasks(config, tasks):
 
         head_repo = config.params["head_repository"]
         head_rev = config.params["head_rev"]
-
+        bootstrap_url = config.params.file_url(
+            "python/mozboot/bin/bootstrap.py", pretty=False
+        )
         # Get all the non macos/windows local toolchains (the only ones bootstrap can use),
         # and use them as dependencies for the tasks we create, so that they don't start
         # before any potential toolchain task that would be triggered on the same push
@@ -61,7 +63,7 @@ def bootstrap_tasks(config, tasks):
                 # MOZ_AUTOMATION changes the behavior, and we want something closer to user
                 # machines.
                 "unset MOZ_AUTOMATION",
-                f"curl --retry 5 -L -f -O {head_repo}/raw-file/{head_rev}/python/mozboot/bin/bootstrap.py",
+                f"curl --retry 5 -L -f -O {bootstrap_url}",
                 # We keep using git-cinnabar here because we rely on being able to pull
                 # the head revision from Mercurial.
                 f"python3 bootstrap.py --vcs=git-cinnabar --no-interactive --application-choice {app}",
