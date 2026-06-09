@@ -1,0 +1,18 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-android-gradle-plugins-ac-dependencies-linux2404-64/opt",
+                "source-test-python-firefox-ci",
+                "source-test-python-verify-decision"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
