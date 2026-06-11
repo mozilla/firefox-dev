@@ -1,0 +1,24 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-doc-generate",
+                "source-test-mozlint-eslint",
+                "source-test-mozlint-py-ruff",
+                "source-test-mozlint-py-ruff-format",
+                "source-test-mozlint-shellcheck",
+                "source-test-mozlint-yaml",
+                "source-test-python-mozversioncontrol-linux2404-64/opt",
+                "source-test-taskgraph-diff",
+                "source-test-webidl-test"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
