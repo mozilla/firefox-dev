@@ -1,0 +1,18 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-doc-generate",
+                "source-test-python-mozversioncontrol-linux2404-64/opt",
+                "source-test-webidl-test"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
