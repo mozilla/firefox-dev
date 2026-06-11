@@ -366,9 +366,19 @@ def show_taskgraph(options):
         else:
             base_ref = options["diff"]
 
-        base_ref_file = base_ref.replace("/", "_")
         try:
-            repo.update(base_ref)
+            # In CI the base revision is often not checkout-able: a brand-new
+            # branch (e.g. a `mach try` push) reports the null SHA as its
+            # "before" revision, and a shallow clone won't contain an older base
+            # revision either. Git can't check out a revision it doesn't have,
+            # so fall back to the current revision -- an empty diff -- rather
+            # than crashing.
+            try:
+                repo.update(base_ref)
+            except subprocess.CalledProcessError:
+                base_ref = cur_ref
+                repo.update(base_ref)
+            base_ref_file = base_ref.replace("/", "_")
             base_ref = repo.head_rev[:12]
             options["output_file"] = os.path.join(
                 diffdir, f"{options['graph_attr']}_{base_ref_file}"
