@@ -1,0 +1,19 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-file-metadata-bugzilla-components",
+                "source-test-vendor-rust",
+                "source-test-wpt-manifest-upload",
+                "source-test-wpt-metadata-summary"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
