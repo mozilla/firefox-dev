@@ -1,0 +1,17 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-clang-tidy",
+                "source-test-puppeteer-puppeteer-1"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
