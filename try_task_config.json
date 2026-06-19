@@ -1,0 +1,19 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "docker-image-lint",
+                "fetch-7zz",
+                "packages-deb12-mercurial",
+                "toolchain-linux64-jdk-repack"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
