@@ -1,3 +1,4 @@
+foo
 ![Firefox Browser](./docs/readme/readme-banner.svg)
 
 [Firefox](https://firefox.com/) is a fast, reliable and private web browser from the non-profit [Mozilla organization](https://mozilla.org/).
