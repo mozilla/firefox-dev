@@ -1,0 +1,31 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-test-android-detekt-detekt-android-components",
+                "source-test-android-detekt-detekt-fenix",
+                "source-test-android-detekt-detekt-focus",
+                "source-test-android-l10n-lint-l10n-lint-android-components",
+                "source-test-android-l10n-lint-l10n-lint-fenix",
+                "source-test-android-l10n-lint-l10n-lint-focus",
+                "source-test-android-lint-android-components",
+                "source-test-android-lint-fenix",
+                "source-test-android-lint-focus",
+                "source-test-buildconfig-buildconfig-android-components",
+                "source-test-buildconfig-buildconfig-fenix",
+                "source-test-buildconfig-buildconfig-focus",
+                "source-test-ktlint-android-components",
+                "source-test-ktlint-fenix",
+                "source-test-ktlint-focus",
+                "source-test-mozlint-android-android-components",
+                "source-test-mozlint-android-fenix",
+                "source-test-mozlint-android-focus"
+            ]
+        }
+    },
+    "version": 2
+}
