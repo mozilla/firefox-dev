@@ -1,0 +1,14 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "empty"
+            },
+            "tasks": [],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
