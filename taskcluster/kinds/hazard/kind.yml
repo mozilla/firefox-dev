@@ -15,7 +15,6 @@ transforms:
     - gecko_taskgraph.transforms.task:transforms
 
 task-defaults:
-    run-on-repo-type: [hg]
     attributes:
         retrigger: true
     treeherder:
@@ -37,7 +36,6 @@ tasks:
             platform: linux64/debug
             symbol: SM(H)
         run:
-            clone-with: hg
             using: hazard
             command: >
                 cd /builds/worker/checkouts/gecko/taskcluster/scripts/builder
@@ -66,7 +64,6 @@ tasks:
             platform: linux64/debug
             symbol: H
         run:
-            clone-with: hg
             using: hazard
             command: >
                 cd /builds/worker/checkouts/gecko/taskcluster/scripts/builder
