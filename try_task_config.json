@@ -1,0 +1,16 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "docker-image-valgrind-build",
+                "packages-deb12-valgrind",
+                "valgrind-linux64-valgrind-qr/opt-swr"
+            ]
+        }
+    },
+    "version": 2
+}
