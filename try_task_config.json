@@ -1,0 +1,15 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "hazard-linux64-haz/debug",
+                "hazard-linux64-shell-haz/debug"
+            ]
+        }
+    },
+    "version": 2
+}
