@@ -1,0 +1,29 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "fetch-searchfox-cli",
+                "searchfox-android-aarch64-searchfox/debug",
+                "searchfox-ios-searchfox/debug",
+                "searchfox-linux64-searchfox/debug",
+                "searchfox-linux64-searchfox/opt",
+                "searchfox-macosx64-aarch64-searchfox/debug",
+                "searchfox-macosx64-aarch64-searchfox/opt",
+                "searchfox-macosx64-searchfox/debug",
+                "searchfox-win64-searchfox/debug",
+                "searchfox-win64-searchfox/opt",
+                "toolchain-linux64-aarch64-searchfox-cli",
+                "toolchain-linux64-searchfox-cli",
+                "toolchain-macosx64-aarch64-searchfox-cli",
+                "toolchain-macosx64-searchfox-cli",
+                "toolchain-win32-searchfox-cli",
+                "toolchain-win64-searchfox-cli"
+            ]
+        }
+    },
+    "version": 2
+}
