@@ -1,0 +1,31 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "diff-artifact-linux64-validation",
+                "diff-artifact-macosx64-validation",
+                "diff-artifact-win64-validation",
+                "diff-reproducible-linux64",
+                "diff-reproducible-linux64-generated-files",
+                "fetch-onnxruntime-deps",
+                "fetch-onnxruntime-src",
+                "toolchain-clang-dist-toolchain",
+                "toolchain-macosx64-python-3.11",
+                "toolchain-macosx64-xz",
+                "toolchain-onnxruntime-aarch64-apple-darwin",
+                "toolchain-onnxruntime-aarch64-linux-android",
+                "toolchain-onnxruntime-arm-linux-androideabi",
+                "toolchain-onnxruntime-i686-windows-msvc",
+                "toolchain-onnxruntime-x86_64-apple-darwin",
+                "toolchain-onnxruntime-x86_64-linux-android",
+                "toolchain-onnxruntime-x86_64-linux-gnu",
+                "toolchain-onnxruntime-x86_64-windows-msvc"
+            ]
+        }
+    },
+    "version": 2
+}
