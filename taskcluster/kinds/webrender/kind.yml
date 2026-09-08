@@ -13,7 +13,6 @@ transforms:
     - gecko_taskgraph.transforms.task:transforms
 
 task-defaults:
-    run-on-repo-type: [hg]
     attributes:
         retrigger: true
     run-on-projects: ['integration', 'release']
@@ -40,7 +39,6 @@ tasks:
                 - linux64-rust
                 - wrench-deps
         run:
-            clone-with: hg
             using: run-task
             command: >-
                 export PATH=$PATH:$MOZ_FETCHES_DIR/rustc/bin:${MOZ_FETCHES_DIR}/wrench-deps/meson &&
@@ -65,7 +63,6 @@ tasks:
                 - linux64-rust
                 - wrench-deps
         run:
-            clone-with: hg
             using: run-task
             command: >-
                 export PATH=$PATH:$MOZ_FETCHES_DIR/rustc/bin:${MOZ_FETCHES_DIR}/wrench-deps/meson &&
@@ -106,7 +103,6 @@ tasks:
                 - artifact: clang.tar.zst
                   dest: clang-mac
         run:
-            clone-with: hg
             using: run-task
             command: '$HOME/checkouts/gecko/taskcluster/scripts/misc/wrench-macos-build.sh'
         treeherder:
@@ -133,7 +129,6 @@ tasks:
                 - 'wrench-macos.tar.bz2'
                 - 'wrench-macos-headless.tar.bz2'
         run:
-            clone-with: hg
             using: run-task
             cwd: '{checkout}/gfx/wr'
             command: >-
@@ -164,7 +159,6 @@ tasks:
                 - macosx64-sdk
                 - wrench-deps
         run:
-            clone-with: hg
             using: run-task
             command: '$HOME/checkouts/gecko/taskcluster/scripts/misc/wr-cargotest-macos-build.sh'
         treeherder:
@@ -189,7 +183,6 @@ tasks:
             webrender-cargotest-macos-build:
                 - 'cargo-test-binaries.tar.bz2'
         run:
-            clone-with: hg
             using: run-task
             cwd: '{checkout}/gfx/wr'
             command: >-
@@ -217,7 +210,6 @@ tasks:
                 - vs
                 - wrench-deps
         run:
-            clone-with: hg
             using: run-task
             use-caches: false
             command: '$GECKO_PATH/taskcluster/scripts/misc/wrench-windows-tests.sh'
@@ -251,7 +243,6 @@ tasks:
                   name: public/build/six.tar.gz
                   path: /builds/worker/checkouts/gecko/third_party/python/six.tar.gz
         run:
-            clone-with: hg
             using: run-task
             cwd: '{checkout}/gfx/wr/wrench'
             command: >-
@@ -304,7 +295,6 @@ tasks:
                   name: public/build/six.tar.gz
                   path: /builds/worker/checkouts/gecko/third_party/python/six.tar.gz
         run:
-            clone-with: hg
             using: run-task
             cwd: '{checkout}/gfx/wr/wrench'
             command: >-
@@ -367,7 +357,6 @@ tasks:
                 - android34-avd-x86_64-linux
                 - linux64-jdk
         run:
-            clone-with: hg
             using: run-task
             tooltool-downloads: internal
             command: >-
@@ -416,7 +405,6 @@ tasks:
                 - android34-avd-x86_64-linux
                 - linux64-jdk
         run:
-            clone-with: hg
             using: run-task
             tooltool-downloads: internal
             command: >-
@@ -463,7 +451,6 @@ tasks:
                 - artifact: 'mozharness.zip'
                   dest: 'mozharness'
         run:
-            clone-with: hg
             using: run-task
             checkout: false
             run-as-root: true
@@ -512,7 +499,6 @@ tasks:
                 - artifact: 'mozharness.zip'
                   dest: 'mozharness'
         run:
-            clone-with: hg
             using: run-task
             checkout: false
             run-as-root: true
@@ -561,7 +547,6 @@ tasks:
                 - artifact: 'mozharness.zip'
                   dest: 'mozharness'
         run:
-            clone-with: hg
             using: run-task
             checkout: false
             run-as-root: true
@@ -610,7 +595,6 @@ tasks:
                 - artifact: 'mozharness.zip'
                   dest: 'mozharness'
         run:
-            clone-with: hg
             using: run-task
             checkout: false
             run-as-root: true
