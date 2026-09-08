@@ -1,0 +1,25 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "artifact-build-linux64-artifact/debug",
+                "artifact-build-linux64-artifact/opt",
+                "artifact-build-macosx64-artifact/debug",
+                "artifact-build-macosx64-artifact/opt",
+                "artifact-build-win64-artifact/debug",
+                "artifact-build-win64-artifact/opt",
+                "toolchain-macosx64-clang-22",
+                "toolchain-macosx64-clang-22-profile",
+                "toolchain-macosx64-clang-22-raw",
+                "toolchain-macosx64-clang-22-stage2",
+                "toolchain-onnxruntime-aarch64-apple-darwin",
+                "toolchain-onnxruntime-x86_64-apple-darwin"
+            ]
+        }
+    },
+    "version": 2
+}
