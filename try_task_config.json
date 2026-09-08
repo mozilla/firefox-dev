@@ -1,0 +1,28 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "webrender-android-emulator-debug",
+                "webrender-android-emulator-release",
+                "webrender-android-hw-a55-debug",
+                "webrender-android-hw-a55-opt",
+                "webrender-android-hw-p6-debug",
+                "webrender-android-hw-p6-opt",
+                "webrender-cargotest-macos-build",
+                "webrender-linux64-debug",
+                "webrender-linux64-release",
+                "webrender-macos-debug",
+                "webrender-macos-release",
+                "webrender-windows",
+                "webrender-wrench-android-debug",
+                "webrender-wrench-android-release",
+                "webrender-wrench-macos-build"
+            ]
+        }
+    },
+    "version": 2
+}
