@@ -1,0 +1,17 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "fuzzing-grizzly-osx-aarch64-debug",
+                "fuzzing-grizzly-osx-aarch64-opt",
+                "fuzzing-grizzly-osx-debug",
+                "fuzzing-grizzly-osx-opt"
+            ]
+        }
+    },
+    "version": 2
+}
