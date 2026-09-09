@@ -1,0 +1,16 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "perftest-linux-browsertime-sample-linux2404-64-shippable/opt",
+                "perftest-linux-perftest-accessibility-linux2404-64-shippable/opt",
+                "perftest-linux-perftest-places-linux2404-64-shippable/opt"
+            ]
+        }
+    },
+    "version": 2
+}
