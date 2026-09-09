@@ -1,0 +1,26 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "instrumented-build-android-aarch64-shippable/opt",
+                "instrumented-build-android-arm-shippable/opt",
+                "instrumented-build-android-x86_64-shippable/opt",
+                "instrumented-build-linux64-aarch64-shippable/opt",
+                "instrumented-build-linux64-nightlyasrelease/opt",
+                "instrumented-build-linux64-shippable/opt",
+                "instrumented-build-macosx64-aarch64-nightlyasrelease/opt",
+                "instrumented-build-macosx64-aarch64-shippable/opt",
+                "instrumented-build-macosx64-shippable/opt",
+                "instrumented-build-win32-shippable/opt",
+                "instrumented-build-win64-aarch64-shippable/opt",
+                "instrumented-build-win64-nightlyasrelease/opt",
+                "instrumented-build-win64-shippable/opt"
+            ]
+        }
+    },
+    "version": 2
+}
