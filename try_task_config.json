@@ -1,0 +1,25 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "generate-profile-android-aarch64-shippable/opt",
+                "generate-profile-android-arm-shippable/opt",
+                "generate-profile-android-x86_64-shippable/opt",
+                "generate-profile-linux64-nightlyasrelease/opt",
+                "generate-profile-linux64-shippable/opt",
+                "generate-profile-macosx64-aarch64-nightlyasrelease/opt",
+                "generate-profile-macosx64-aarch64-shippable/opt",
+                "generate-profile-macosx64-shippable/opt",
+                "generate-profile-win32-shippable/opt",
+                "generate-profile-win64-aarch64-shippable/opt",
+                "generate-profile-win64-nightlyasrelease/opt",
+                "generate-profile-win64-shippable/opt"
+            ]
+        }
+    },
+    "version": 2
+}
