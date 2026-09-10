@@ -1,0 +1,26 @@
+{
+    "parameters": {
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "build-win32-mingwclang/debug",
+                "build-win32-mingwclang/opt",
+                "build-win64-mingwclang/debug",
+                "build-win64-mingwclang/opt",
+                "snap-upstream-build-amd64-nightly/opt",
+                "snap-upstream-test-basic-2204-amd64-nightly/opt",
+                "snap-upstream-test-basic-2404-amd64-nightly/opt",
+                "startup-test-linux64",
+                "startup-test-linux64-aarch64",
+                "startup-test-macosx64",
+                "startup-test-win32",
+                "startup-test-win64",
+                "startup-test-win64-aarch64"
+            ]
+        }
+    },
+    "version": 2
+}
